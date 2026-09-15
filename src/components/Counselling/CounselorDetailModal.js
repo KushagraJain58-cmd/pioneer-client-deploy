@@ -3,6 +3,7 @@
 import { useContext } from "react"
 import { X } from "lucide-react"
 import CounsellingContext from "../../context/counsellingContext"
+import { PLACEHOLDER_AVATAR } from "./placeholder"
 
 export default function CounselorDetailModal() {
   const {
@@ -20,7 +21,7 @@ export default function CounselorDetailModal() {
   const handleBookSession = () => {
     if (selectedSlot) {
       setBookedSession({
-        counselor: selectedCounselor.name,
+        counselor: selectedCounselor.fullName,
         slot: selectedSlot,
       })
       setShowConfirmation(true)
@@ -49,8 +50,9 @@ export default function CounselorDetailModal() {
         <div className="p-8 space-y-2">
           <div className="flex gap-8">
             <img
-              src={selectedCounselor.image || "/placeholder.svg"}
-              alt={selectedCounselor.name}
+              src={selectedCounselor.profileImage || PLACEHOLDER_AVATAR}
+              onError={(e) => (e.currentTarget.src = PLACEHOLDER_AVATAR)}
+              alt={selectedCounselor.fullName}
               width={300}
               height={400}
               className="w-48 h-64 object-cover rounded-2xl"
@@ -58,14 +60,21 @@ export default function CounselorDetailModal() {
 
             <div className="flex-1">
               <h3 className="text-2xl font-bold text-slate-900 mb-1">
-                {selectedCounselor.name}
+                {selectedCounselor.fullName}
               </h3>
-              <p className="text-indigo-600 font-semibold mb-4 text-sm">
-                {selectedCounselor.experience} YEARS EXPERIENCE
+              <p className="text-indigo-600 font-semibold mb-4 text-sm uppercase">
+                {selectedCounselor.title}
               </p>
-              <p className="text-slate-700 leading-relaxed text-sm">
-                {selectedCounselor.bio}
+              <p className="text-slate-700 leading-relaxed text-sm mb-4">
+                {selectedCounselor.shortDescription}
               </p>
+              <div className="flex flex-wrap gap-2">
+                {selectedCounselor.keywords?.map((kw) => (
+                  <span key={kw} className="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-full">
+                    {kw}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
