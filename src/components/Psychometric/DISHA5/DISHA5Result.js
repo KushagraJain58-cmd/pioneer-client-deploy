@@ -64,7 +64,7 @@ export default function DISHA5Result() {
   const { adaptability, mindset, decisionStyle, learningAgility, ambiguityRisk, futureOrientation, sjt, validity, quadrant, summary } = result;
 
   const cRadar = (adaptability?.dimensions || []).map((d) => ({ dim: d.scale, T: d.tScore }));
-  const decisionBars = (decisionStyle?.styles || []).map((s) => ({ style: s.style, score: s.score }));
+  const decisionBars = (decisionStyle?.styles || []).map((s) => ({ name: s.style, score: s.score }));
   const riskBars = [
     { scale: "Ambiguity Tolerance", T: ambiguityRisk?.ambigTol?.tScore ?? 50 },
     { scale: "Risk-Taking", T: ambiguityRisk?.riskTake?.tScore ?? 50 },
@@ -217,11 +217,11 @@ export default function DISHA5Result() {
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={decisionBars} layout="vertical" margin={{ left: 30 }}>
                     <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10 }} />
-                    <YAxis type="category" dataKey="style" width={90} tick={{ fontSize: 12 }} />
+                    <YAxis type="category" dataKey="name" width={90} tick={{ fontSize: 12 }} />
                     <RTooltip />
                     <Bar dataKey="score" radius={[0, 6, 6, 0]}>
                       {decisionBars.map((e, i) => (
-                        <Cell key={i} fill={e.style === decisionStyle.dominant ? accent : navy} />
+                        <Cell key={i} fill={e.name === decisionStyle.dominant ? accent : navy} />
                       ))}
                     </Bar>
                   </BarChart>
