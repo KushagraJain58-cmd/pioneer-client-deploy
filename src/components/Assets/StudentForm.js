@@ -213,18 +213,21 @@ const StudentForm = ({ isOpen }) => {
 
   /* -------------------- INPUT COMPONENTS -------------------- */
 
+  const getError = (name) =>
+    name.split(".").reduce((acc, key) => acc?.[key], errors)?.message;
+
   const InputField = ({ name, placeholder, type = "text" }) => (
-    <div className="flex flex-col gap-1.5">
+    <div key={name} className="flex flex-col gap-1.5">
       <input
         type={type}
         placeholder={placeholder}
         {...register(name)}
-        className={`w-full px-4 py-3 rounded-lg border bg-white
-          ${errors?.[name]?.message ? "border-red-400" : "border-slate-200"}`}
+        className={`w-full px-4 py-3 rounded-lg border bg-white text-slate-900 placeholder:text-slate-400
+          ${getError(name) ? "border-red-400" : "border-slate-200"}`}
       />
-      {errors?.[name]?.message && (
+      {getError(name) && (
         <span className="text-xs text-red-500">
-          {errors[name]?.message}
+          {getError(name)}
         </span>
       )}
     </div>
@@ -232,8 +235,9 @@ const StudentForm = ({ isOpen }) => {
 
   const SelectField = ({ name, options }) => (
     <select
+      key={name}
       {...register(name)}
-      className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-white"
+      className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-white text-slate-900"
     >
       <option value="">Select</option>
       {options.map((o) => (
@@ -361,26 +365,11 @@ const StudentForm = ({ isOpen }) => {
                 <User className="w-4 h-4" /> Basic Info
               </h3>
               <div className="grid grid-cols-2 gap-4">
-                <InputField
-                  name="personalInfo.fullName"
-                  placeholder="Full Name"
-                />
-                <InputField
-                  name="personalInfo.dateOfBirth"
-                  type="date"
-                />
-                <SelectField
-                  name="personalInfo.gender"
-                  options={genders}
-                />
-                <InputField
-                  name="contactInfo.mobileNumber"
-                  placeholder="Student Mobile"
-                />
-                <InputField
-                  name="contactInfo.studentEmail"
-                  placeholder="Student Email"
-                />
+                {InputField({ name: "personalInfo.fullName", placeholder: "Full Name" })}
+                {InputField({ name: "personalInfo.dateOfBirth", type: "date" })}
+                {SelectField({ name: "personalInfo.gender", options: genders })}
+                {InputField({ name: "contactInfo.mobileNumber", placeholder: "Student Mobile" })}
+                {InputField({ name: "contactInfo.studentEmail", placeholder: "Student Email" })}
               </div>
             </section>
 
@@ -388,18 +377,9 @@ const StudentForm = ({ isOpen }) => {
             <section className="bg-white p-6 rounded-xl">
               <h3 className="text-sm font-semibold mb-4">Academic Info</h3>
               <div className="grid grid-cols-3 gap-4">
-                <SelectField
-                  name="academicInfo.classGrade"
-                  options={classes}
-                />
-                <SelectField
-                  name="academicInfo.section"
-                  options={sections}
-                />
-                <InputField
-                  name="academicInfo.rollNumber"
-                  placeholder="Roll Number"
-                />
+                {SelectField({ name: "academicInfo.classGrade", options: classes })}
+                {SelectField({ name: "academicInfo.section", options: sections })}
+                {InputField({ name: "academicInfo.rollNumber", placeholder: "Roll Number" })}
               </div>
             </section>
 
@@ -429,18 +409,9 @@ const StudentForm = ({ isOpen }) => {
                 <MapPin className="w-4 h-4" /> Address
               </h3>
               <div className="grid grid-cols-2 gap-4">
-                <SelectField
-                  name="addressInfo.state"
-                  options={states}
-                />
-                <InputField
-                  name="addressInfo.city"
-                  placeholder="City"
-                />
-                <InputField
-                  name="addressInfo.address"
-                  placeholder="Address"
-                />
+                {SelectField({ name: "addressInfo.state", options: states })}
+                {InputField({ name: "addressInfo.city", placeholder: "City" })}
+                {InputField({ name: "addressInfo.address", placeholder: "Address" })}
               </div>
             </section>
 
@@ -450,16 +421,10 @@ const StudentForm = ({ isOpen }) => {
                 <Users className="w-4 h-4" /> Parent / Guardian
               </h3>
               <div className="grid grid-cols-2 gap-4">
-                <InputField name="familyInfo.fatherName" placeholder="Father Name" />
-                <InputField name="familyInfo.motherName" placeholder="Mother Name" />
-                <InputField
-                  name="familyInfo.parentMobile"
-                  placeholder="Parent Mobile"
-                />
-                <InputField
-                  name="familyInfo.parentEmail"
-                  placeholder="Parent Email"
-                />
+                {InputField({ name: "familyInfo.fatherName", placeholder: "Father Name" })}
+                {InputField({ name: "familyInfo.motherName", placeholder: "Mother Name" })}
+                {InputField({ name: "familyInfo.parentMobile", placeholder: "Parent Mobile" })}
+                {InputField({ name: "familyInfo.parentEmail", placeholder: "Parent Email" })}
               </div>
             </section>
 
